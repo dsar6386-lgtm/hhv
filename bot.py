@@ -1,9 +1,11 @@
 import os
 import json
 import telebot
+from flask import Flask, request
 
 TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
+RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN topilmadi!")
@@ -11,7 +13,11 @@ if not TOKEN:
 if not ADMIN_CHAT_ID:
     raise ValueError("ADMIN_CHAT_ID topilmadi!")
 
+if not RENDER_URL:
+    raise ValueError("RENDER_EXTERNAL_URL topilmadi!")
+
 bot = telebot.TeleBot(TOKEN)
+app = Flask(__name__)
 
 
 @bot.message_handler(commands=["start"])
@@ -37,7 +43,6 @@ def receive_order(message):
         )
 
         bot.send_message(ADMIN_CHAT_ID, order_text)
-
         bot.send_message(
             message.chat.id,
             "✅ Buyurtmangiz adminga yuborildi!"
@@ -51,4 +56,25 @@ def receive_order(message):
         )
 
 
-bot.infinity_polling()
+@app.route("/", methods=["GET"])
+def home():
+    return "Sayqal Food bot ishlayapti!"
+
+
+@app.route("/webhook", methods=["POST"])
+def webhook():
+    update = telebot.types.Update.de_json(
+        request.get_data().decode("utf-8")
+    )
+    bot.process_new_updates([update])
+    return "OK", 200
+
+
+bot.remove_webhook()
+bot.set_webhook(url=RENDER_URL + "/webhook")
+
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 10000))
+    )
