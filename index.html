@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sayqal Food</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090806;color:#fff;font-family:Arial,sans-serif}
+header{padding:24px 16px 14px;text-align:center;background:linear-gradient(135deg,#080706,#30200b,#080706);border-bottom:1px solid #9d7025}
+.logo{font-size:38px;color:#f7c64b;font-weight:bold;text-shadow:0 0 15px #b77a16}
+.sub{color:#d7bd83;font-size:12px}
+main{padding:15px;padding-bottom:90px}
+.page{display:none}
+.page.active{display:block}
+h2{color:#f5c44e;text-align:center;margin:8px 0 18px}
+.hero{border:1px solid #a87929;border-radius:18px;padding:20px 14px;text-align:center;background:linear-gradient(145deg,#261707,#090806)}
+.hero .burger{font-size:75px}
+.hero h1{color:#f6c64d;margin:8px}
+.gold{background:linear-gradient(135deg,#ffe18a,#d99518);color:#211405;border:0;border-radius:13px;padding:13px;font-weight:bold;font-size:15px}
+button{cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.card{background:linear-gradient(145deg,#211708,#0c0a07);border:1px solid #74501c;border-radius:15px;padding:13px;text-align:center}
+.food{font-size:45px}
+.card h3{font-size:15px;margin:7px 0;color:#ffe0a0}
+.price{color:#f6c64d;font-size:14px;margin:8px}
+.add{border:0;border-radius:50%;background:#eeb33b;color:#201200;width:30px;height:30px;font-size:20px}
+.menuCats{display:flex;gap:7px;overflow:auto;margin-bottom:15px}
+.menuCats button{white-space:nowrap;background:#211708;color:#fff;border:1px solid #76511d;border-radius:20px;padding:9px 13px}
+.menuCats button.selected{background:#e9ad32;color:#211300}
+.balance{padding:13px;border:1px solid #a87929;border-radius:14px;text-align:center;color:#f8cf64;margin:15px 0}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.tile{padding:17px 5px;text-align:center;background:#1b140b;border:1px solid #76521f;border-radius:13px;color:#f5ca65}
+.tile span{display:block;font-size:27px;margin-bottom:8px}
+.game{font-size:14px}
+.game p{font-size:12px;color:#d9c59c}
+.cartbar{position:fixed;bottom:67px;left:12px;right:12px;background:#eeb63d;color:#1b1103;border-radius:13px;padding:12px;text-align:center;font-weight:bold}
+nav{position:fixed;bottom:0;left:0;right:0;background:#100d08;border-top:1px solid #79551f;display:flex;justify-content:space-around;padding:9px 2px}
+nav button{background:none;border:0;color:#c8b994;font-size:11px}
+nav button span{display:block;font-size:22px;margin-bottom:3px}
+nav button.active{color:#f7c64b}
+input{width:100%;padding:13px;border-radius:10px;background:#17120b;border:1px solid #76521f;color:white;margin:7px 0}
+.info{color:#cbb98f;font-size:13px;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">♛ S ♛</div>
+ <div style="font-size:23px;color:#f5c64e;font-weight:bold">Sayqal Food</div>
+ <div class="sub">FAST FOOD & RESTAURANT</div>
+</header>
+
+<main>
+<section id="home" class="page active">
+ <div class="hero">
+  <div class="burger">🍔</div>
+  <h1>Ta’m biz bilan yanada mazali!</h1>
+  <p>Sayqal Food olamiga xush kelibsiz!</p>
+  <button class="gold" onclick="show('menu')">🍔 Buyurtma berish</button>
+ </div>
+ <div class="balance">💎 Bonus balans: <b>2 000</b> ball</div>
+ <div class="tiles">
+  <button class="tile" onclick="show('menu')"><span>🍔</span>Menyu</button>
+  <button class="tile" onclick="show('pickup')"><span>🛍️</span>Olib ketish</button>
+  <button class="tile" onclick="show('delivery')"><span>🛵</span>Yetkazish</button>
+  <button class="tile" onclick="show('games')"><span>🎮</span>O‘yinlar</button>
+  <button class="tile" onclick="show('bonus')"><span>🎁</span>Bonuslar</button>
+  <button class="tile" onclick="show('profile')"><span>👤</span>Profil</button>
+ </div>
+ <div class="card" style="margin-top:14px">⭐ <b style="color:#f6c64d">Sayqal Food aksiyasi</b><p class="info">Mazali taomlar va yoqimli bonuslar sizni kutmoqda!</p></div>
+</section>
+
+<section id="menu" class="page">
+ <h2>👑 MENYU</h2>
+ <div class="menuCats">
+  <button class="selected">Burgerlar</button><button>Pitsalar</button><button>Lavash</button><button>Ichimliklar</button>
+ </div>
+ <div class="grid" id="foods"></div>
+</section>
+
+<section id="games" class="page">
+ <h2>🎮 O‘YINLAR</h2>
+ <p class="info">Do‘stlaringiz bilan o‘ynang va reyting to‘plang!</p>
+ <div class="grid">
+  <div class="card game"><div class="food">🃏</div><h3>Durak</h3><p>2–6 o‘yinchi</p><button class="gold" onclick="gameInfo('Durak')">O‘ynash</button></div>
+  <div class="card game"><div class="food">♟️</div><h3>Shaxmat</h3><p>2 o‘yinchi</p><button class="gold" onclick="gameInfo('Shaxmat')">O‘ynash</button></div>
+  <div class="card game"><div class="food">🏁</div><h3>Shashka</h3><p>2 o‘yinchi</p><button class="gold" onclick="gameInfo('Shashka')">O‘ynash</button></div>
+  <div class="card game"><div class="food">🎯</div><h3>Knif</h3><p>Virtual arcade o‘yini</p><button class="gold" onclick="gameInfo('Knif')">O‘ynash</button></div>
+  <div class="card game" style="grid-column:span 2"><div class="food">🕵️</div><h3>Mafia</h3><p>3–6 o‘yinchi · Ovozli va yozma suhbat</p><button class="gold" onclick="gameInfo('Mafia')">O‘ynash</button></div>
+ </div>
+ <div class="balance">🏆 O‘yin reytingi: 2 000 ball</div>
+</section>
+
+<section id="pickup" class="page">
+ <h2>🛍️ OLIB KETISH</h2>
+ <p class="info">Taomlaringizni tanlang va olib ketish uchun buyurtma bering.</p>
+ <button class="gold" onclick="show('menu')">Menyuni ochish</button>
+</section>
+
+<section id="delivery" class="page">
+ <h2>🛵 YETKAZIB BERISH</h2>
+ <p class="info">Manzilingizni kiriting. Buyurtmangizni tayyorlashga yordam beramiz.</p>
+ <input id="address" placeholder="Yetkazish manzili">
+ <button class="gold" onclick="alert('Manzil savatcha bilan birga buyurtma yuborilganda ishlatiladi.')">Manzilni saqlash</button>
+ <button class="gold" style="margin-top:10px" onclick="show('menu')">Menyuga o‘tish</button>
+</section>
+
+<section id="bonus" class="page">
+ <h2>🎁 BONUSLAR</h2>
+ <div class="hero"><div class="food">💎</div><h2>2 000 ball</h2><p>Sayqal Food bonuslari</p></div>
+ <div class="card"><div class="food">▦</div><h3>QR kod orqali bonus</h3><p class="info">Buyurtma qadoqlaridagi QR kodni skanerlash imkoniyati keyingi bosqichda ulanadi.</p></div>
+</section>
+
+<section id="profile" class="page">
+ <h2>👤 PROFIL</h2>
+ <div class="hero"><div class="food">👑</div><h2>Sayqal Food mijozi</h2><p>Bonus balans: 2 000 ball</p></div>
+ <div class="card">📦 Mening buyurtmalarim</div>
+ <div class="card" style="margin-top:10px">🏆 O‘yinlar reytingi</div>
+ <div class="card" style="margin-top:10px">⚙️ Sozlamalar</div>
+</section>
+</main>
+
+<div id="cartbar" class="cartbar" onclick="sendOrder()" style="display:none">🛒 Savatcha: <span id="count">0</span> ta · <span id="total">0</span> so‘m — Buyurtma</div>
+
+<nav>
+ <button class="active" onclick="show('home',this)"><span>⌂</span>Bosh sahifa</button>
+ <button onclick="show('menu',this)"><span>🍔</span>Menyu</button>
+ <button onclick="show('games',this)"><span>🎮</span>O‘yinlar</button>
+ <button onclick="show('bonus',this)"><span>🎁</span>Bonus</button>
+ <button onclick="show('profile',this)"><span>👤</span>Profil</button>
+</nav>
+
+<script>
+const products=[
+ {name:'Cheeseburger',price:79000,emoji:'🍔'},
+ {name:'Double Burger',price:109000,emoji:'🍔'},
+ {name:'Pizza Margarita',price:89000,emoji:'🍕'},
+ {name:'French Fries',price:29000,emoji:'🍟'},
+ {name:'Coca-Cola',price:18000,emoji:'🥤'},
+ {name:'Milkshake',price:29000,emoji:'🥛'},
+ {name:'Lavash',price:45000,emoji:'🌯'},
+ {name:'Chicken Burger',price:69000,emoji:'🍔'}
+];
+let cart=[];
+const foods=document.getElementById('foods');
+products.forEach((p,i)=>{
+ const el=document.createElement('div');
+ el.className='card';
+ el.innerHTML=`<div class="food">${p.emoji}</div><h3>${p.name}</h3><div class="price">${p.price.toLocaleString('uz-UZ')} so‘m</div><button class="add" onclick="add(${i})">+</button>`;
+ foods.appendChild(el);
+});
+function show(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');
+ else document.querySelectorAll('nav button').forEach(b=>{if(b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')});
+}
+function add(i){
+ cart.push(products[i]);
+ document.getElementById('count').textContent=cart.length;
+ document.getElementById('total').textContent=cart.reduce((s,p)=>s+p.price,0).toLocaleString('uz-UZ');
+ document.getElementById('cartbar').style.display='block';
+}
+function sendOrder(){
+ if(!cart.length)return;
+ alert('Savatchangiz tayyor! Buyurtmani Telegram botga yuborish keyingi bosqichda ulanadi.');
+}
+function gameInfo(name){
+ alert(name+' o‘yini tanlandi. Do‘stlar bilan o‘ynash va serverga ulash keyingi bosqichda qo‘shiladi.');
+}
+</script>
+</body>
+</html>
